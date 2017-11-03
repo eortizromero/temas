@@ -5,5 +5,9 @@ t = Temas(__name__)
 app = t.app
 
 if __name__ == '__main__':
-	from werkzeug.serving import run_simple
-	run_simple('localhost', 4000, app)
+    try:
+        from wsgiref.simple_server import make_server
+        httpd = make_server('localhost', 4000, app)
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print "Adios"
