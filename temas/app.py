@@ -1,7 +1,7 @@
 # -*- coding: latin-1 -*-
 
 import sys
-import json
+from temas import json
 
 
 class BaseWeb(object):
@@ -14,6 +14,7 @@ class BaseWeb(object):
 
         if ruta_raiz is None:
             print "No hay ruta Raiz"
+
 
 class Temas(BaseWeb):
     _nombre = '/'
