@@ -1,5 +1,8 @@
 # -*- coding: latin-1 -*-
 
-from .app import Temas
+# from .aplicacion import Temas
+from .controladores import *
+from .ruteador import *
+
 
 
