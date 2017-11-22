@@ -28,17 +28,30 @@ class Ruteador(object):
     def __init__(self):
         self.ruteadores = []
 
-    def agregar_ruteo(self, plantilla, controlador, **vars):
+    def agregar_ruteo(self, plantilla, controlador, metodos, **vars):
         if isinstance(controlador, basestring):
             controlador = cargar_controlador(controlador)
-        self.ruteadores.append((re.compile(plantilla_para_expreg(plantilla)), controlador, vars))
+        self.ruteadores.append((re.compile(plantilla_para_expreg(plantilla)), controlador, metodos, vars))
 
     def __call__(self, entorno, iniciar_respuesta):
         peticion = Peticion(entorno)
-        for expreg, controlador, vars in self.ruteadores:
+        metodo = entorno['REQUEST_METHOD']
+        for expreg, controlador, metodos, vars in self.ruteadores:
             m = expreg.match(peticion.path)
             if m:
                 peticion.url_vars = m.groupdict()
                 peticion.url_vars.update(vars)
+                if metodo not in metodos:
+                    print metodo, metodos
+                # if metodos is None:
+                #     self.metodos = None
+                # else:
+                #     if isinstance(metodos, str):
+                #         raise TypeError("El metodo debe ser Iterable[str], no una cadena.")
+                #     self.metodos = set([x.upper() for x in metodos])
+                #     if 'HEAD' not in self.metodos and 'GET' in self.metodos:
+                #         self.metodos.add('HEAD')
+                #     entorno['REQUEST_METHOD'] = self.metodos
+                    print entorno['REQUEST_METHOD']
                 return controlador(entorno, iniciar_respuesta)
         return NotFound() (entorno, iniciar_respuesta)

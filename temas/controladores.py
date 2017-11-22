@@ -17,10 +17,10 @@ def controlador(f):
     def remplazar(entorno, iniciar_respuesta):
         peticion = Peticion(entorno)
         try:
-            resp = f(peticion, **peticion.url)
+            resp = f(peticion)
         except HTTPException, e:
             resp = e
         if isinstance(resp, basestring):
-            resp = Respuesta(body=resp)
+            resp = Respuesta(response=resp)
         return resp(entorno, iniciar_respuesta)
     return remplazar
